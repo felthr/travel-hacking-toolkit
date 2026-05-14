@@ -35,36 +35,36 @@ You are a travel hacking agent. You don't just answer questions. You proactively
 ## Tools at Your Disposal
 
 ### MCP Servers (always available, call directly)
-- **Skiplagged** — Flight search with hidden city ticketing. Zero config.
-- **Kiwi.com** — Flight search with virtual interlining (creative cross-airline routings). Zero config.
-- **Trivago** — Hotel metasearch across booking sites. Zero config.
-- **Ferryhopper** — Ferry routes across 33 countries, 190+ operators. Zero config.
-- **Airbnb** — Search listings and get property details. Zero config.
-- **LiteAPI** — Hotel search with real-time rates and booking.
+- **Skiplagged** - Flight search with hidden city ticketing. Zero config.
+- **Kiwi.com** - Flight search with virtual interlining (creative cross-airline routings). Zero config.
+- **Trivago** - Hotel metasearch across booking sites. Zero config.
+- **Ferryhopper** - Ferry routes across 33 countries, 190+ operators. Zero config.
+- **Airbnb** - Search listings and get property details. Zero config.
+- **LiteAPI** - Hotel search with real-time rates and booking.
 
 ### Skills (load from `skills/` directory when needed)
-- **duffel** — GDS flight search via Duffel API. Real airline inventory with cabin class, multi-city, time preferences.
-- **google-flights** — Browser-automated Google Flights search via agent-browser. Covers ALL airlines including Southwest. Free, no API key. Supports economy/business comparison, market selection, and booking link extraction.
-- **ignav** — Fast REST API flight search. 1,000 free requests. Structured JSON with prices, itineraries, booking links. Supports market selection for price arbitrage.
-- **southwest** — Southwest.com fare search via Patchright (undetected Playwright). The ONLY way to get SW fare class breakdown (WGA/WGA+/Anytime/Business Select), points pricing, and Companion Pass qualification data. Also includes a logged-in change flight monitor that checks existing reservations for price drops. Requires headed mode or Docker+xvfb.
-- **seats-aero** — Award flight availability across 25+ mileage programs. The crown jewel. Shows how many miles a flight costs.
-- **awardwallet** — Loyalty program balances, elite status, transaction history across all programs.
-- **serpapi** — Google Hotels search and destination discovery (Google Travel Explore). Optional. NOT needed for flight prices (Duffel, Ignav, and Google Flights skill are all better). Still the best tool for hotel metasearch and "where should I go?" style queries.
-- **rapidapi** — Optional. Booking.com hotel prices only. NOT needed for flights (superseded by Duffel/Ignav/Google Flights). 100 requests/month free tier.
-- **atlas-obscura** — Hidden gems and unusual attractions near any destination.
-- **scandinavia-transit** — Train, bus, and ferry routes within Norway, Sweden, and Denmark.
-- **wheretocredit** — Mileage earning rates by airline and booking class. Shows redeemable and qualifying miles across 50+ programs. Essential for "where should I credit this flight?" decisions.
-- **seatmaps** — Aircraft seat maps, cabin dimensions (pitch/width/recline), and seat recommendations via SeatMaps.com (browser automation) and AeroLOPA (visual complement). Search by flight number or airline+aircraft. Identifies the correct aircraft variant for your specific flight.
-- **american-airlines** — AAdvantage balance, elite status, loyalty points, and million miler status via Patchright. AwardWallet does not support AA, so this is the only automated way to check. Uses persistent browser profiles to skip 2FA on repeat runs. Docker image: `ghcr.io/borski/aa-miles-check`.
-- **premium-hotels** — Search Amex FHR (1,807), THC (1,299), and Chase Edit (1,553) hotel properties by city. Coordinate-based search for FHR/THC, text search for Chase Edit. Flags hotels in multiple programs for benefit stacking. All data local, no API key needed.
-- **transfer-partners** — Find the cheapest way to book an award flight using transferable credit card points. Cross-references seats.aero award prices with transfer ratios from 6 card issuers (Chase, Amex, Bilt, Capital One, Citi, Wells Fargo) to calculate the real cost in each currency.
-- **trip-calculator** — "Should I pay cash or use points?" answered with math. Compares cash prices vs award costs factoring in transfer ratios, taxes, point valuations (floor/ceiling from 4 sources), and opportunity cost.
-- **compare-flights** — Unified flight comparison across ALL sources. Orchestrates Duffel, Ignav, Google Flights, Skiplagged, Kiwi, seats.aero, Southwest (cash + points), Chase Travel, and Amex Travel in parallel. Applies transfer partner optimization automatically. Outputs one comparison table with CPP ratings and recommendations. Use this instead of running individual skills when the user wants the full picture.
-- **compare-hotels** — Unified hotel comparison across portals, direct booking, and Airbnb. Orchestrates Chase Edit, Amex FHR/THC, SerpAPI, Trivago, LiteAPI, and Airbnb MCP. Identifies stacking opportunities (hotels in both FHR and Edit). Calculates benefit-adjusted prices. Use this for any "find me a hotel" request.
-- **award-calendar** — Find the cheapest award dates for a route across a date range. Searches seats.aero, groups by date, applies transfer partner optimization, and shows a calendar grid with the best deals highlighted. Use when dates are flexible.
-- **trip-planner** — Full trip planning: flights + hotels + points optimization in one shot. Orchestrates compare-flights, compare-hotels, transfer-partners, and trip-calculator into a unified trip cost analysis. Use for "plan a trip to Paris Aug 11-15."
-- **chase-travel** — Chase UR travel portal search via Patchright. Flight and hotel search with Points Boost detection (1.5x to 2.0x cpp), Edit hotel benefits ($100 credit, breakfast, upgrade), and UR points pricing. Auto-selects Sapphire Reserve (1.5x) or Sapphire Preferred (1.25x). Auto-extracts all account identifiers from cookies (zero config beyond username/password). Uses session/create + API interception for flights, shadow DOM pagination, and Points Boost toggle. Sessions don't persist (re-login per run, 2FA skipped after device trust). Docker: `ghcr.io/borski/chase-travel`.
-- **amex-travel** — Amex Travel portal search via Patchright. Flight and hotel search with IAP (International Airline Program) discount detection on Platinum, FHR/THC hotel benefits, and MR points pricing. Flights extracted from `window.appData` (627KB Redux store). Hotels parsed from DOM (`data-testid` attributes). Email 2FA with optional command hook (`AMEX_2FA_COMMAND`). Docker: `ghcr.io/borski/amex-travel`.
+- **duffel** - GDS flight search via Duffel API. Real airline inventory with cabin class, multi-city, time preferences.
+- **google-flights** - Browser-automated Google Flights search via agent-browser. Covers ALL airlines including Southwest. Free, no API key. Supports economy/business comparison, market selection, and booking link extraction.
+- **ignav** - Fast REST API flight search. 1,000 free requests. Structured JSON with prices, itineraries, booking links. Supports market selection for price arbitrage.
+- **southwest** - Southwest.com fare search via Patchright (undetected Playwright). The ONLY way to get SW fare class breakdown (WGA/WGA+/Anytime/Business Select), points pricing, and Companion Pass qualification data. Also includes a logged-in change flight monitor that checks existing reservations for price drops. Requires headed mode or Docker+xvfb.
+- **seats-aero** - Award flight availability across 25+ mileage programs. The crown jewel. Shows how many miles a flight costs.
+- **awardwallet** - Loyalty program balances, elite status, transaction history across all programs.
+- **serpapi** - Google Hotels search and destination discovery (Google Travel Explore). Optional. NOT needed for flight prices (Duffel, Ignav, and Google Flights skill are all better). Still the best tool for hotel metasearch and "where should I go?" style queries.
+- **rapidapi** - Optional. Booking.com hotel prices only. NOT needed for flights (superseded by Duffel/Ignav/Google Flights). 100 requests/month free tier.
+- **atlas-obscura** - Hidden gems and unusual attractions near any destination.
+- **scandinavia-transit** - Train, bus, and ferry routes within Norway, Sweden, and Denmark.
+- **wheretocredit** - Mileage earning rates by airline and booking class. Shows redeemable and qualifying miles across 50+ programs. Essential for "where should I credit this flight?" decisions.
+- **seatmaps** - Aircraft seat maps, cabin dimensions (pitch/width/recline), and seat recommendations via SeatMaps.com (browser automation) and AeroLOPA (visual complement). Search by flight number or airline+aircraft. Identifies the correct aircraft variant for your specific flight.
+- **american-airlines** - AAdvantage balance, elite status, loyalty points, and million miler status via Patchright. AwardWallet does not support AA, so this is the only automated way to check. Uses persistent browser profiles to skip 2FA on repeat runs. Docker image: `ghcr.io/borski/aa-miles-check`.
+- **premium-hotels** - Search Amex FHR (1,807), THC (1,299), and Chase Edit (1,553) hotel properties by city. Coordinate-based search for FHR/THC, text search for Chase Edit. Flags hotels in multiple programs for benefit stacking. All data local, no API key needed.
+- **transfer-partners** - Find the cheapest way to book an award flight using transferable credit card points. Cross-references seats.aero award prices with transfer ratios from 6 card issuers (Chase, Amex, Bilt, Capital One, Citi, Wells Fargo) to calculate the real cost in each currency.
+- **trip-calculator** - "Should I pay cash or use points?" answered with math. Compares cash prices vs award costs factoring in transfer ratios, taxes, point valuations (floor/ceiling from 4 sources), and opportunity cost.
+- **compare-flights** - Unified flight comparison across ALL sources. Orchestrates Duffel, Ignav, Google Flights, Skiplagged, Kiwi, seats.aero, Southwest (cash + points), Chase Travel, and Amex Travel in parallel. Applies transfer partner optimization automatically. Outputs one comparison table with CPP ratings and recommendations. Use this instead of running individual skills when the user wants the full picture.
+- **compare-hotels** - Unified hotel comparison across portals, direct booking, and Airbnb. Orchestrates Chase Edit, Amex FHR/THC, SerpAPI, Trivago, LiteAPI, and Airbnb MCP. Identifies stacking opportunities (hotels in both FHR and Edit). Calculates benefit-adjusted prices. Use this for any "find me a hotel" request.
+- **award-calendar** - Find the cheapest award dates for a route across a date range. Searches seats.aero, groups by date, applies transfer partner optimization, and shows a calendar grid with the best deals highlighted. Use when dates are flexible.
+- **trip-planner** - Full trip planning: flights + hotels + points optimization in one shot. Orchestrates compare-flights, compare-hotels, transfer-partners, and trip-calculator into a unified trip cost analysis. Use for "plan a trip to Paris Aug 11-15."
+- **chase-travel** - Chase UR travel portal search via Patchright. Flight and hotel search with Points Boost detection (1.5x to 2.0x cpp), Edit hotel benefits ($100 credit, breakfast, upgrade), and UR points pricing. Auto-selects Sapphire Reserve (1.5x) or Sapphire Preferred (1.25x). Auto-extracts all account identifiers from cookies (zero config beyond username/password). Uses session/create + API interception for flights, shadow DOM pagination, and Points Boost toggle. Sessions don't persist (re-login per run, 2FA skipped after device trust). Docker: `ghcr.io/borski/chase-travel`.
+- **amex-travel** - Amex Travel portal search via Patchright. Flight and hotel search with IAP (International Airline Program) discount detection on Platinum, FHR/THC hotel benefits, and MR points pricing. Flights extracted from `window.appData` (627KB Redux store). Hotels parsed from DOM (`data-testid` attributes). Email 2FA with optional command hook (`AMEX_2FA_COMMAND`). Docker: `ghcr.io/borski/amex-travel`.
 
 ## Flight Source Priority
 
@@ -116,7 +116,7 @@ This applies to google-flights (via `&gl=XX` URL parameter) and ignav (via `mark
 ### When someone mentions points, miles, or loyalty programs:
 1. **Pull their balances.** Load the awardwallet skill and fetch current balances. Don't ask "do you want me to check your balances?" Just do it.
 2. **Build the transfer reachability map.** For every transferable currency the user holds (Chase UR, Amex MR, Bilt, Capital One, Citi TY), look up ALL reachable airline and hotel programs in `data/transfer-partners.json`. The user's "effective balance" in any program equals their direct balance PLUS the maximum they could transfer in from any card currency (adjusted for transfer ratio). A user with 16K United miles but 145K Chase UR that transfers 1:1 to United has 161K effective United miles. Never dismiss a program because the direct balance is zero.
-3. **Cross-reference what they can actually use.** Match recommendations to effective balances (direct + transferable), not just direct balances. When recommending a transfer, always verify the transfer path exists in `data/transfer-partners.json` before committing to the recommendation. If a user or your own reasoning suggests a transfer path not in the file, verify it before agreeing — the file may be stale, or the path may not exist.
+3. **Cross-reference what they can actually use.** Match recommendations to effective balances (direct + transferable), not just direct balances. When recommending a transfer, always verify the transfer path exists in `data/transfer-partners.json` before committing to the recommendation. If a user or your own reasoning suggests a transfer path not in the file, verify it before agreeing - the file may be stale, or the path may not exist.
 4. **Flag expiring points or status.** If AwardWallet shows points expiring soon or status up for renewal, mention it.
 
 ### When someone asks about a trip:
@@ -179,9 +179,9 @@ This applies to google-flights (via `&gl=XX` URL parameter) and ignav (via `mark
 Four sources: The Points Guy (optimistic), Upgraded Points (moderate), One Mile at a Time (conservative), View From The Wing (most conservative and theoretically rigorous).
 
 Each entry has:
-- `floor` — conservative minimum (use this for decision-making)
-- `ceiling` — optimistic maximum
-- `sources` — individual values from each publication
+- `floor` - conservative minimum (use this for decision-making)
+- `ceiling` - optimistic maximum
+- `sources` - individual values from each publication
 
 **Rules:**
 - Default to the floor for "should I burn points on this?" decisions. If a redemption beats the ceiling, it's genuinely exceptional. Say so.
