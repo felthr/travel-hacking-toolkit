@@ -237,11 +237,7 @@ Star Alliance, oneworld, and SkyTeam determine which loyalty programs can book w
 - **Korean Air SKYPASS** books SkyTeam
 - **Avianca LifeMiles** books Star Alliance (often cheaper than United/Aeroplan)
 
-**Recent alliance changes (verify against data file for current state):**
-- SAS moved from Star Alliance to SkyTeam (September 2024)
-- ITA Airways left SkyTeam (early 2025), joining Star Alliance (first half 2026)
-- Fiji Airways upgraded to full oneworld member (2025)
-- Hawaiian Airlines joining oneworld (April 2026)
+**Alliance memberships change.** Before relying on any alliance assignment, verify against `data/alliances.json` (and the airline's own site for very recent moves) - carriers shift alliances (SAS, ITA, Fiji, and Hawaiian have all moved recently). The data file is the source of truth; don't trust dated facts hardcoded in prose.
 
 ## Sweet Spots
 
@@ -257,24 +253,7 @@ When making recommendations, cross-reference against known sweet spots. If a rou
 
 ## Cabin Codes
 
-When reading Seats.aero results or discussing award inventory, these cabin codes appear:
-
-| Code | Cabin | Notes |
-|------|-------|-------|
-| F | First Class | Includes true first class suites |
-| J | Business Class | Lie-flat seats on long-haul |
-| W | Premium Economy | Also sometimes coded as "P" |
-| Y | Economy | Standard seating |
-
-**Fare class codes for saver awards (critical for partner bookings):**
-
-| Code | Meaning | Programs That Use It |
-|------|---------|---------------------|
-| X | Economy Saver | United MileagePlus, bookable through partners |
-| I | Business Saver | United MileagePlus, bookable through Turkish M&S and others |
-| O | First Saver | United MileagePlus |
-
-If you see these fare codes available on united.com, the flight is bookable through partner programs at their (often lower) rates.
+Seats.aero / award-inventory cabin codes: **F** First, **J** Business, **W** Premium Economy (sometimes "P"), **Y** Economy. United partner-saver fare-class codes: **X** Economy Saver, **I** Business Saver, **O** First Saver - if these show on united.com, the flight is bookable through partner programs (often at lower rates).
 
 ## Fallback and Resilience
 
@@ -320,59 +299,25 @@ Finding the deal is half the battle. Telling the user how to actually book it is
 
 **Critical rule: Never transfer points without a hold or confirmed availability.** Transfers are instant with most programs but IRREVERSIBLE. If availability disappears, points are stuck in the loyalty program.
 
-**Phone numbers for major programs:**
-
-| Program | Phone | Online Booking? |
-|---------|-------|-----------------|
-| Virgin Atlantic (ANA awards) | 1-800-365-9500 | No (ANA must be by phone) |
-| United MileagePlus | 1-800-864-8331 | Yes (united.com) |
-| Aeroplan | 1-888-247-2262 | Yes (aircanada.com) |
-| Turkish Miles&Smiles | 1-800-874-8875 | Yes (turkishairlines.com) |
-| Korean Air SKYPASS | 1-800-438-5000 | No (partner awards by phone) |
-| Flying Blue | 1-800-237-2747 | Yes (stopovers by phone) |
-| AAdvantage | 1-800-882-8880 | Yes (aa.com) |
-| Japan Airlines | 1-800-525-3663 | No (find space on ba.com or qantas.com, call JAL to book) |
-| Iberia Avios | N/A | Yes (iberia.com) |
-| Qatar Privilege Club | N/A | Yes (qatarairways.com) |
-| Hyatt | N/A | Yes (hyatt.com or app) |
+**Phone numbers + online-booking availability for major programs** live in `data/alliances.json` (`key_booking_relationships`). Pull from there when a booking needs a phone call - several partner awards are phone-only (ANA via Virgin Atlantic, Korean SKYPASS, JAL).
 
 ## Premium Hotel Programs
 
-Three data files cover hotel programs with elite-like benefits for cardholders:
+Three card-benefit hotel programs, each with a local data file holding the properties plus full benefit detail (property counts, coordinates, reservation links, and dated credit terms live in the files - do not hardcode counts or expiry dates in prose, they drift):
 
-| File | Program | Properties | Benefits |
-|------|---------|-----------|----------|
-| `data/fhr-properties.json` | Amex Fine Hotels & Resorts | 1,807 | $600/yr Plat credit (2x $300 semi-annual), $100 property credit, daily breakfast for 2, 12pm checkin, guaranteed 4pm checkout, room upgrade, wifi |
-| `data/thc-properties.json` | Amex The Hotel Collection | 1,299 | $600/yr Plat credit (2x $300 semi-annual, shared with FHR), $100 property credit, 12pm checkin, room upgrade, late checkout (2-night min) |
-| `data/chase-edit-properties.json` | Chase Edit (Sapphire Reserve) | 1,553 | $500/yr statement credit (2x $250), $100 property credit, daily breakfast, wifi, room upgrade, early/late checkout |
+| File | Program | Card | Headline benefits |
+|------|---------|------|-------------------|
+| `data/fhr-properties.json` | Amex Fine Hotels & Resorts | Platinum | Shared $600/yr Plat hotel credit, $100 property credit, daily breakfast for 2, room upgrade, 4pm checkout. 1-night min. |
+| `data/thc-properties.json` | Amex The Hotel Collection | Platinum | Same shared $600/yr pool, $100 property credit, room upgrade. 2-night min. |
+| `data/chase-edit-properties.json` | Chase Edit | Sapphire Reserve | $500/yr credit, $100 property credit, daily breakfast, upgrade; Points Boost ~2cpp on UR at Edit hotels. Includes a `budget_friendly` tag for cheaper Edit stays. |
 
-**When recommending hotels, cross-reference these lists.** If a property is in FHR, THC, or Chase Edit, mention it. The credit alone ($100-150) can meaningfully offset the nightly rate.
+**Behavioral rules:**
+- When a search result is in FHR, THC, or Chase Edit, mention it - the $100-150 property credit can meaningfully offset the nightly rate.
+- **Stacking:** a property that is both a Chase Edit hotel AND a Chase "Select Hotels" brand can trigger two credits on one stay. Use [awardhelper.com/csr-hotels](https://www.awardhelper.com/csr-hotels) to find stackable properties; read current Select-Hotels terms (brands + expiry) from `data/chase-edit-properties.json` and verify before recommending - they carry dated terms.
+- The Amex Platinum hotel credit is $600/yr split $300 per half-year (Jan-Jun / Jul-Dec), use-it-or-lose-it, triggers on prepayment not stay date; FHR + THC share one pool. Cancellation claws it back. Tool: MaxFHR.com for cheapest FHR/THC by date.
+- **Always compare portal / FHR / Edit prepaid rates against booking direct** - portal rates can be higher.
 
-**Chase Sapphire Reserve hotel credits (2026):**
-
-**The Edit credit: $500/yr** (two separate $250 credits, usable anytime during the calendar year). Two-night minimum, prepaid through Chase Travel. Each stay also gets the $100 property credit + daily breakfast + room upgrade. Points Boost gives 2cpp when redeeming UR at Edit hotels. **Always compare Chase Travel rates against direct booking.**
-
-**Select Hotels credit: $250 one-time (2026 only).** Prepaid 2+ night stay at: IHG, Minor Hotels, Montage, Omni, Pan Pacific, Pendry, or Virgin Hotels. Booked through Chase Travel. Expires Dec 31, 2026. Earns hotel loyalty points AND elite night credits on the full purchase amount.
-
-**Stacking strategy:** Properties that are both Edit hotels AND one of the 7 Select Hotels brands can trigger BOTH credits on a single stay ($250 Edit + $250 Select = $500 back). Use [awardhelper.com/csr-hotels](https://www.awardhelper.com/csr-hotels) to find stackable properties.
-
-**Budget option:** Use the $250 Select Hotels credit at affordable IHG properties (Holiday Inn, Holiday Inn Express). A 2-night prepaid stay around $250 total gets nearly fully covered by the credit alone.
-
-**Amex Platinum hotel credit (FHR or THC):** $600 annual total, split $300 per half-year (Jan-Jun and Jul-Dec). Use it or lose it, does not roll over. Prepaid bookings through Amex Travel with Platinum or Business Platinum. FHR and THC share the same $600 pool.
-- **FHR = 1-night minimum.** THC = 2-night minimum.
-- **Credit triggers on booking/prepayment, not stay date.** Book in June for a September trip and the H1 credit still fires.
-- **5x MR points still earned** on Amex Travel bookings that trigger the credit.
-- **No enrollment needed.** Just book through Amex Travel and pay with your Platinum.
-- **Can split across multiple bookings** if a stay costs less than $300 per half.
-- **Cancellation = clawback** unless you rebook before the credit expires.
-- **Elite status recognition is hit or miss** through Amex Travel. Plug in loyalty numbers anyway.
-- **MaxFHR.com** is a great tool for finding the cheapest FHR/THC properties by date and destination.
-- **Always compare Amex Travel rates against booking direct.** Portal rates can be higher.
-
-**FHR data includes:** coordinates, Amex reservation links, Google Travel price calendar links, and credit details.
-**Chase Edit data includes:** 190 properties tagged `budget_friendly` from the "Potentially Cheaper Ones" category.
-
-**Data source:** 美卡指南 (US Card Guide) Google My Maps, maintained by Scott. To refresh, re-pull the KML files:
+**Data source:** 美卡指南 (US Card Guide) Google My Maps (maintained by Scott). Refresh the KML files:
 - FHR/THC: `https://www.google.com/maps/d/kml?mid=1HygPCP9ghtDptTNnpUpd_C507Mq_Fhec&forcekml=1`
 - Chase Edit: `https://www.google.com/maps/d/kml?mid=1Ickidw1Z6ACres9EnbM2CmPObYsuijM&forcekml=1`
 
