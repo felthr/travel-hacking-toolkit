@@ -19,3 +19,6 @@ Thumbs.db
 *~
 .idea/
 .vscode/
+
+# Personal agent instructions (Claude Code)
+CLAUDE.local.md
